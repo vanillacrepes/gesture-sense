@@ -98,4 +98,4 @@ This project is licensed under the MIT License. See `LICENSE` for details.
 
 ---
 
-> Made with Love using Python & Computer Vision.
+> Made with ❤️ using Python & Computer Vision.
