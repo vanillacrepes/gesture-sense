@@ -73,36 +73,44 @@ def calculateDistance(x1, y1, x2, y2): # Place distance code here for cleaner ma
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 # Pythagorean
 
 def m1Handler(landmark_a, landmark_b, frame_width, frame_height):
+    if not hasattr(m1Handler, "button_down"):
+        m1Handler.button_down = False  # Initialize on first call
+
     x = int(landmark_a[0] * frame_width)
     y = int(landmark_a[1] * frame_height)
 
-    # If pinch is detected
     distance = calculateDistance(landmark_a[0], landmark_a[1], landmark_b[0], landmark_b[1])
     is_lowered = landmark_a[1] > landmark_b[1]
 
-    if distance < pinch_threshold or is_lowered:
+    if (distance < pinch_threshold or is_lowered) and not m1Handler.button_down:
         pyautogui.mouseDown()
-        cv2.putText(frame, "Click!", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 1)
-    else:
-        pyautogui.mouseUp()
+        m1Handler.button_down = True
+        cv2.putText(frame, "Left Down", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 1)
 
-    # cv2.putText(frame, str(round(thumb_to_index_distance,3)), (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 1)
+    elif distance >= pinch_threshold and not is_lowered and m1Handler.button_down:
+        pyautogui.mouseUp()
+        m1Handler.button_down = False
+        cv2.putText(frame, "Left Up", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 1)
 
 def m2Handler(landmark_a, landmark_b, frame_width, frame_height):
+    if not hasattr(m2Handler, "button_down"):
+        m2Handler.button_down = False  # Initialize on first call
+
     x = int(landmark_a[0] * frame_width)
     y = int(landmark_a[1] * frame_height)
 
-    # If pinch is detected
     distance = calculateDistance(landmark_a[0], landmark_a[1], landmark_b[0], landmark_b[1])
     is_lowered = landmark_a[1] > landmark_b[1]
 
-    print(distance, is_lowered)
-
-    if distance < pinch_threshold or is_lowered:
+    if (distance < pinch_threshold or is_lowered) and not m2Handler.button_down:
         pyautogui.mouseDown(button='right')
-        cv2.putText(frame, "Click!", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 1)
-    else:
+        m2Handler.button_down = True
+        cv2.putText(frame, "Right Down", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 1)
+
+    elif distance >= pinch_threshold and not is_lowered and m2Handler.button_down:
         pyautogui.mouseUp(button='right')
+        m2Handler.button_down = False
+        cv2.putText(frame, "Right Up", (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 1)
 
 def cursorHandler(landmark, smoothed_cursor_x, smoothed_cursor_y, frame_width, frame_height):
     x = int(landmark[0] * frame_width)
