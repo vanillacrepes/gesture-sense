@@ -1,37 +1,59 @@
-# Gesture-Sense
+---
 
-A real-time hand gesture recognition system built with OpenCV, MediaPipe, and PyAutoGUI. Control your mouse and keyboard using hand gestures captured via webcam.
+# ✋ GestureSense
 
-## 📌 Features
+**GestureSense** is a real-time hand gesture controller that lets you control your computer using just your hands — no touchpad or mouse needed. Powered by OpenCV, MediaPipe, and PyAutoGUI, this project transforms your webcam into a gesture-based input system.
 
-- 🖱️ **Cursor Control** — Move the mouse with your hand (index finger).
-- 👈 **Left Click** — Pinch or lower index finger to left-click and hold.
-- 👉 **Right Click** — Pinch or lower middle finger to right-click and hold.
-- 🖱️ **Scrolling** — Raise or lower the thumb to scroll up or down.
-- 💬 **ASL-based Typing** (As a Proof of Concept) — Type letters like A, B, C with simple hand signs.
-- 🔄 **Gesture-Based Mode Switching** — Switch between "mouse mode" and "typing mode" using hand gestures.
-- 🎯 **Dual Hand Support** — Use right hand for control, left hand for mode switching.
+---
 
-## 📦 Requirements
+## 🚀 Features
 
-- Python 3.7+
-- Webcam
+| Gesture                        | Action               |
+| ------------------------------ | -------------------- |
+| ☝️ Move index finger           | Control mouse cursor |
+| 🤏 Pinch or lower index        | Left click & hold    |
+| ✌️ Pinch or lower middle       | Right click & hold   |
+| 👍 Raise thumb                 | Scroll up            |
+| 👎 Lower thumb                 | Scroll down          |
+| ✊ + 👍 Thumb out               | Type "A"             |
+| ✋ All fingers up               | Type "B"             |
+| 🤚 Curved fingers left         | Type "C"             |
+| 👈 Swipe left (with left hand) | Switch control modes |
+
+---
+
+## 🎮 Modes
+
+You can switch between different gesture modes using your **left hand**:
+
+* 🖱️ **Mouse Mode** — Move the cursor, click, and scroll.
+* 🔤 **Typing Mode** — Type basic ASL letters like A, B, and C.
+* 🧭 **Radial Mode** — Debug or expand with radial gesture detection.
+
+---
+
+## 💻 Requirements
+
+* Python 3.7 or later
+* A working webcam
 
 ### Python Packages
 
-Install via pip:
+Install dependencies using pip:
 
 ```bash
 pip install opencv-python mediapipe pyautogui
 ```
 
-## 🚀 Getting Started
+---
+
+## 🛠️ Installation & Usage
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/hand-gesture-controller.git
-cd hand-gesture-controller
+git clone https://github.com/your-username/gesture-sense.git
+cd gesture-sense
 ```
 
 2. Run the main script:
@@ -40,62 +62,67 @@ cd hand-gesture-controller
 python main.py
 ```
 
-3. Interact with your computer using your hands!
+3. Raise your right hand and start interacting!
 
-## 🧠 How It Works
-
-This project uses:
-- **MediaPipe Hands** to track hand landmarks in real-time.
-- **PyAutoGUI** to trigger mouse and keyboard events.
-- **OpenCV** to process webcam input and display visual feedback.
-
-### Gesture Mappings
-
-| Gesture                      | Action                     |
-|-----------------------------|----------------------------|
-| Index finger pinch/lower    | Left click & hold          |
-| Middle finger pinch/lower   | Right click & hold         |
-| Thumb raised                | Scroll up                  |
-| Thumb lowered               | Scroll down                |
-| Fist with thumb out         | Type 'A'                   |
-| All fingers up              | Type 'B'                   |
-| Curved fingers to left      | Type 'C'                   |
-| Left thumb swipe            | Switch control modes       |
+---
 
 ## ⚙️ Configuration
 
-You can modify constants in the script to tweak performance:
+You can tweak the system to your liking by modifying these variables in `main.py`:
 
 ```python
-pinch_threshold = 0.02
-cursor_smoothing_factor = 0.5
+pinch_threshold = 0.02  # Pinch detection sensitivity
+cursor_smoothing_factor = 0.5  # Cursor movement smoothing
 screen_width = 1920
 screen_height = 1080
 ```
 
-## 🧪 Known Limitations
+---
 
-- Typing functionality is limited to a few letters (A–C) and is just a proof-of-concept.
-- Requires good lighting for accurate hand detection.
-- Cursor precision may vary based on webcam quality and environment.
+## 🧠 How It Works
 
-## 📚 Future Work
+GestureSense uses:
 
-- Add gesture customization interface
-- Expand ASL typing support
-- Multi-hand simultaneous actions
-- GUI overlay for feedback and settings
+* **MediaPipe Hands** — for fast, real-time hand and finger tracking
+* **OpenCV** — for capturing and displaying video frames
+* **PyAutoGUI** — to simulate mouse and keyboard actions
 
-## 🙏 Credits
-
-- [MediaPipe](https://github.com/google/mediapipe) by Google
-- [OpenCV](https://opencv.org/)
-- [PyAutoGUI](https://pyautogui.readthedocs.io/en/latest/)
-
-## 📝 License
-
-This project is licensed under the MIT License. See `LICENSE` for details.
+The system detects finger positions and angles, recognizes patterns (like pinches or hand shapes), and maps them to mouse or keyboard input.
 
 ---
 
-> Made with ❤️ using Python & Computer Vision.
+## 🚧 Limitations
+
+* ASL typing is limited to basic gestures (A–C) and is proof-of-concept.
+* Hand tracking accuracy depends on lighting and webcam quality.
+* Multi-hand interaction is limited; only one hand controls at a time.
+
+---
+
+## 🌱 Future Enhancements
+
+* 🔠 Full ASL alphabet support
+* 🧩 Gesture customization and GUI-based training
+* 💡 On-screen visual gesture guides
+* 🖥️ Multi-screen support
+* 🔄 Two-handed simultaneous gestures
+
+---
+
+## 🙌 Acknowledgments
+
+* [MediaPipe](https://github.com/google/mediapipe) by Google
+* [OpenCV](https://opencv.org/)
+* [PyAutoGUI](https://pyautogui.readthedocs.io/en/latest/)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for more info.
+
+---
+
+> Built with ❤️ by a science high schooler passionate about AI and computer vision.
+
+---
