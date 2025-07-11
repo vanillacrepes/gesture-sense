@@ -1,10 +1,6 @@
----
-
 # ✋ GestureSense
 
 **GestureSense** is a real-time hand gesture controller that lets you control your computer using just your hands — no touchpad or mouse needed. Powered by OpenCV, MediaPipe, and PyAutoGUI, this project transforms your webcam into a gesture-based input system.
-
----
 
 ## 🚀 Features
 
