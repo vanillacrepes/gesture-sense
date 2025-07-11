@@ -1,6 +1,7 @@
 import cv2 # camera
 import mediapipe as mp # hand recognition
 import pyautogui # macro
+import math
 
 # Configuration
 pinch_threshold = 0.02
@@ -17,7 +18,7 @@ cv_frame_height = 480
 screen_width = 1920
 screen_height = 1080
 
-control_mode_count = 2
+control_mode_array = ["mouse", "asl", "radial", "race"]  # IMPORTANT
 last_control_mode_switch_check = 0
 control_mode_switch_buffer = 5
 
@@ -34,6 +35,8 @@ m2_landmark_b = 11
 scroll_landmark_a = 4
 scroll_landmark_b = 7
 scroll_landmark_c = 0
+radial_landmark_a = 12
+radial_landmark_b = 0
 
 # ASL
 last_asl_check = 0
@@ -196,20 +199,72 @@ def typingHandler(landmarks, last_asl_check): # just a demo poc
     else:
         return last_asl_check
 
-def modeSwitchHandler(landmark_a, landmark_b, frame_width, frame_height, mode, last_check):
-    if last_check > 0:
-        last_check += 1
-        if last_check < control_mode_switch_buffer:
-            return mode, last_check
-
+def modeSwitchHandler(landmark_a, landmark_b, frame_width, frame_height, mode, rLandmark_a, rLandmark_b):
     if landmark_a[0] < landmark_b[0]:  # Gesture to switch mode
-        if mode < control_mode_count:
-            mode += 1
-        else:
-            mode = 1
-        return mode, 1  # Start cooldown
+        angle =  radialHandler90(rLandmark_a, rLandmark_b, frame_width, frame_height)
+        control_count = len(control_mode_array)
 
-    return mode, last_check
+        for i in enumerate(control_mode_array):
+            index = i[0] + 1
+            minAngle = (index - 1) * (90 / control_count) if index > 0 else 0
+            maxAngle = (index) * (90 / control_count)
+
+            if angle >= minAngle and angle < maxAngle:
+                return index
+
+    return mode
+
+def radialHandler180(landmark_a, landmark_b, frame_width, frame_height):    
+    # Get the vector from wrist to middle finger tip
+    dx = landmark_a[0] - landmark_b[0]  # x difference
+    dy = landmark_a[1] - landmark_b[1]  # y difference (note: y increases downward in image coordinates)
+    
+    # Flip y coordinate since image y-axis is inverted (0 at top, increases downward)
+    dy = -dy
+    
+    # Calculate angle in radians using atan2
+    angle_rad = math.atan2(dy, dx)
+    
+    # Convert to degrees
+    angle_deg = math.degrees(angle_rad)
+    
+    # Normalize to 0-360 range
+    if angle_deg < 0:
+        angle_deg += 360
+    
+    # Clamp depending on quadrants
+    if angle_deg > 180 and angle_deg <= 270:
+        angle_deg = 180
+    elif angle_deg > 270:
+        angle_deg = 0
+
+    return angle_deg
+
+def radialHandler90(landmark_a, landmark_b, frame_width, frame_height):    
+    # Get the vector from wrist to middle finger tip
+    dx = landmark_a[0] - landmark_b[0]  # x difference
+    dy = landmark_a[1] - landmark_b[1]  # y difference (note: y increases downward in image coordinates)
+    
+    # Flip y coordinate since image y-axis is inverted (0 at top, increases downward)
+    dy = -dy
+    
+    # Calculate angle in radians using atan2
+    angle_rad = math.atan2(dy, dx)
+    
+    # Convert to degrees
+    angle_deg = math.degrees(angle_rad)
+    
+    # Normalize to 0-360 range
+    if angle_deg < 0:
+        angle_deg += 360
+    
+    # Clamp depending on quadrants
+    if angle_deg > 90 and angle_deg <= 270:
+        angle_deg = 90
+    elif angle_deg > 270:
+        angle_deg = 0
+    
+    return angle_deg
 
 if __name__ == "__main__":
     cleanPAG() # Disable pyautogui failsafe for better performance (these are frame killers lol)
@@ -254,7 +309,7 @@ if __name__ == "__main__":
                 landmarks_positions = extractLandmarkPositions(landmarks) # store positions of landmarks
 
                 if not handedness:
-                    control_mode, last_control_mode_switch_check = modeSwitchHandler(landmarks_positions[4], landmarks_positions[9], frame_width, frame_height, control_mode, last_control_mode_switch_check)
+                    control_mode = modeSwitchHandler(landmarks_positions[4], landmarks_positions[9], frame_width, frame_height, control_mode, landmarks_positions[radial_landmark_a], landmarks_positions[radial_landmark_b])
 
                 if handedness:
                     if control_mode == 1:
@@ -266,10 +321,9 @@ if __name__ == "__main__":
                     elif control_mode == 2:
                         last_asl_check = typingHandler(landmarks_positions, last_asl_check)
 
+                    elif control_mode == 3:
+                        print(radialHandler180(landmarks_positions[radial_landmark_a], landmarks_positions[radial_landmark_b], frame_width, frame_height))
+
         cv2.imshow("ruh", frame) # Display that frame in a window
-        
-        # Stolen from stackoverflow
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
 
     camClose(cam)
