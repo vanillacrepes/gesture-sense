@@ -18,7 +18,7 @@ cv_frame_height = 480
 screen_width = 1920
 screen_height = 1080
 
-control_mode_array = ["mouse", "asl", "radial", "race"]  # IMPORTANT
+control_mode_array = ["mouse", "asl", "radial"]  # IMPORTANT
 last_control_mode_switch_check = 0
 control_mode_switch_buffer = 5
 
