@@ -119,6 +119,6 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for m
 
 ---
 
-> Built with ❤️ by a science high schooler passionate about AI and computer vision.
+> Built with ❤️ by ephemera.
 
 ---
