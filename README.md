@@ -7,14 +7,12 @@
 | Gesture                        | Action               |
 | ------------------------------ | -------------------- |
 | ☝️ Move index finger           | Control mouse cursor |
-| 🤏 Pinch or lower index        | Left click & hold    |
-| ✌️ Pinch or lower middle       | Right click & hold   |
+| 🤏 Pinch or index        | Left click & hold |
+| 🤏 Pinch or middle       | Right click & hold |
 | 👍 Raise thumb                 | Scroll up            |
 | 👎 Lower thumb                 | Scroll down          |
-| ✊ + 👍 Thumb out               | Type "A"             |
-| ✋ All fingers up               | Type "B"             |
-| 🤚 Curved fingers left         | Type "C"             |
-| 👈 Swipe left (with left hand) | Switch control modes |
+| ✋ ASL alphabet               | Type "A", "B", "C" |
+| 👈 Tuck in left thumb and rotate | Switch control modes |
 
 ---
 

@@ -1,9 +1,13 @@
+# Ephemera <3
+# Simple project to learn mediapipe
+
 import cv2 # camera
 import mediapipe as mp # hand recognition
 import pyautogui # macro
+import math
 from radial import radial180, radial90
 from mouse import m1Handler, m2Handler, cursorHandler, scrollHandler
-from typing import typingHandler
+from asl_typing import typingHandler
 
 # Configuration
 pinch_threshold = 0.02
@@ -39,6 +43,8 @@ scroll_landmark_b = 7
 scroll_landmark_c = 0
 radial_landmark_a = 12
 radial_landmark_b = 0
+wrist_landmark = 0
+normalize_landmark = 9
 
 # ASL
 last_asl_check = 0
@@ -73,6 +79,44 @@ def extractLandmarkPositions(landmarks):
         landmarks_positions.append(l_positions)
 
     return landmarks_positions
+
+def normalizeHand(landmark_wrist, landmark_a, landmarks):
+    # create a vector from the wrist to landmark a
+    dx = landmark_a[0] - landmark_wrist[0]
+    dy = landmark_a[1] - landmark_wrist[1]
+
+    # Calculate current angle
+    current_angle = math.atan2(dy, dx)
+
+    # target angle is -pi/2 (because things are upside down in coordinate system)
+    target_angle = -math.pi / 2
+
+    # Angle to rotate
+    da = target_angle - current_angle
+
+    # cos theta and sin theta
+    cos_da = math.cos(da)
+    sin_da = math.sin(da)
+
+    # Rotate all landmarks around the wrist
+    normalized_landmarks = []
+    for x, y in landmarks:
+        # Let wrist be origin and translate
+        tl_x = x - landmark_wrist[0]
+        tl_y = y - landmark_wrist[1]
+
+        # Rotate
+        rot_x = tl_x * cos_da - tl_y * sin_da
+        rot_y = tl_x * sin_da + tl_y * cos_da
+
+        # Translate back
+        final_x = rot_x + landmark_wrist[0]
+        final_y = rot_y + landmark_wrist[1]
+
+        normalized_landmarks.append([final_x, final_y])
+
+    return normalized_landmarks
+
 
 def modeSwitchHandler(landmark_a, landmark_b, frame_width, frame_height, mode, rLandmark_a, rLandmark_b):
     if landmark_a[0] < landmark_b[0]:  # Gesture to switch mode
@@ -131,6 +175,11 @@ if __name__ == "__main__":
                 mp_draw.draw_landmarks(frame, landmarks, mp_hands.HAND_CONNECTIONS, landmark_drawing_spec=dot_style, connection_drawing_spec=line_style)
 
                 landmarks_positions = extractLandmarkPositions(landmarks) # store positions of landmarks
+                landmarks_positions_normalized  = normalizeHand(landmarks_positions[wrist_landmark], landmarks_positions[normalize_landmark], landmarks_positions)
+
+                x = int(landmarks_positions_normalized[8][0] * frame_width)
+                y = int(landmarks_positions_normalized[8][1] * frame_height)
+                cv2.circle(frame, (x, y), 10, (255, 0, 255), -1)
 
                 if not handedness: # left hand code
                     control_mode = modeSwitchHandler(landmarks_positions[4], landmarks_positions[9], frame_width, frame_height, control_mode, landmarks_positions[radial_landmark_a], landmarks_positions[radial_landmark_b])
