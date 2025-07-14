@@ -5,12 +5,22 @@ import cv2 # camera
 import mediapipe as mp # hand recognition
 import pyautogui # macro
 import math
+
+# Modules
 from radial import radial180, radial90
 from mouse import m1Handler, m2Handler, cursorHandler, scrollHandler
 from asl_typing import typingHandler
 
-# Configuration
+### User configuration
+
 pinch_threshold = 0.02
+
+screen_width = 1920
+screen_height = 1080
+
+cursor_smoothing_factor = 0.5
+
+# Slightly more risky user configuration
 
 dot_color = (177, 156, 217)
 line_color = (255, 255, 255)
@@ -21,18 +31,13 @@ mp_min_tracking_confidence = 0.5
 
 cv_frame_width = 640
 cv_frame_height = 480
-screen_width = 1920
-screen_height = 1080
 
 control_mode_array = ["mouse", "asl", "radial"]  # IMPORTANT
-last_control_mode_switch_check = 0
 control_mode_switch_buffer = 5
+asl_check_threshold = 5
 
-# Smoothing factor
-
-cursor_smoothing_factor = 0.5
-
-# Finger coordinate assignments
+# Mildly risky user configuration (Finger coordinate assignments)
+# Here if you're curious (from mediapipe docs): encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYfCpn25OmLxmbMbqinhYCJBp1GqyuSb5iHA&s
 cursor_landmark = 5
 m1_landmark_a = 8
 m1_landmark_b = 7
@@ -46,9 +51,11 @@ radial_landmark_b = 0
 wrist_landmark = 0
 normalize_landmark = 9
 
-# ASL
+### END OF USER CONFIG
+
+# variables
 last_asl_check = 0
-asl_check_threshold = 5
+last_control_mode_switch_check = 0
 
 # Performance optimizations
 frames_skipped = 1

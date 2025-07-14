@@ -65,10 +65,10 @@ python main.py
 You can tweak the system to your liking by modifying these variables in `main.py`:
 
 ```python
-pinch_threshold = 0.02  # Pinch detection sensitivity
-cursor_smoothing_factor = 0.5  # Cursor movement smoothing
+pinch_threshold = 0.02
 screen_width = 1920
 screen_height = 1080
+cursor_smoothing_factor = 0.5
 ```
 
 ---
