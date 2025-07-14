@@ -89,17 +89,6 @@ The system detects finger positions and angles, recognizes patterns (like pinche
 
 * ASL typing is limited to basic gestures (A–C) and is proof-of-concept.
 * Hand tracking accuracy depends on lighting and webcam quality.
-* Multi-hand interaction is limited; only one hand controls at a time.
-
----
-
-## 🌱 Future Enhancements
-
-* 🔠 Full ASL alphabet support
-* 🧩 Gesture customization and GUI-based training
-* 💡 On-screen visual gesture guides
-* 🖥️ Multi-screen support
-* 🔄 Two-handed simultaneous gestures
 
 ---
 
@@ -117,6 +106,6 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for m
 
 ---
 
-> Built with ❤️ by ephemera.
+> By ephemera (crepes). <3
 
 ---
